@@ -4,22 +4,28 @@ import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+
+
 void main() async {
   Map _data = await getJSON("https://floating-sierra-36981.herokuapp.com/api/index");
-//  Encrypted test = _data['data'];
-  final key = en.Key.fromUtf8("LOVE_MURADNAGAR");
-  final test = en.Key.fromUtf8(_data['data']);
-
+  final key = en.Key.fromUtf8("LOVE_MURADNAGAR.................");
   final iv = IV.fromLength(16);
   final encrypter = Encrypter(AES(key));
-  final decrypted = encrypter.decrypt(test, iv: iv);
-  print("Data=> $_data");
+//  final encrypted= en.Encrypted(_data['data']);
+//  final encrypted = encrypter.encrypt(_data['data'], iv: iv);
+  final decrypted = encrypter.decrypt(_data['data'], iv: iv);
+  print("Encryped Data=> $_data");
+  print("Decryped Data=> $decrypted");
   runApp(MaterialApp(
     home: SafeArea(
       child: Scaffold(
         body: Container(
           child: Column(
             children: <Widget>[
+              Text(_data['data'].toString()),
+              Padding(
+                padding: EdgeInsets.all(20),
+              ),
               Text(decrypted),
             ],
           ),
@@ -30,22 +36,10 @@ void main() async {
 }
 
 getJSON(String str) async {
-//  String apiUrl = str ;
   http.Response response = await http.get(str);
 
   print(response.body);
-  return json.decode(response.body);
+  print(json.decode(response.body));
+  return (response.body);
 }
-//class MyApp extends StatefulWidget {
-//  @override
-//  _MyAppState createState() => _MyAppState();
-//}
-//
-//class _MyAppState extends State<MyApp> {
-//  @override
-//  Widget build(BuildContext context) {
-//    return Container(
-//      child: Text(_data[0]),
-//    );
-//  }
-//}
+
